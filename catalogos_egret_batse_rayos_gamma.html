@@ -1,0 +1,1939 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EGRET (Energetic Gamma Ray Experiment Telescope) &mdash; Third Part Observational Techniques 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="Segunda_practica.html" />
+    <link rel="prev" title="Third Part Observational Techniques documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Third Part Observational Techniques
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>EGRET (Energetic Gamma Ray Experiment Telescope)</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Introduction-and-Objective">Introduction and Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Querying-Vizier-Catalog">Querying Vizier Catalog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Retrieving-the-Complete-EGRET-Catalog">Retrieving the Complete EGRET Catalog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Catalog-Table-Explanation">Catalog Table Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Data-Conversion-to-pandas-DataFrame">Data Conversion to pandas DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Columns-Description">Columns Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Counting-Object-Types:-Manual-vs.-Pandas-Approach">Counting Object Types: Manual vs. Pandas Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Handling-Unclassified-Sources-(ID-Column)">Handling Unclassified Sources (ID Column)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Here's-how-this-works:">Here’s how this works:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Working-with-Coordinates-(df_egretCoords)">Working with Coordinates (<code class="docutils literal notranslate"><span class="pre">df_egretCoords</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Mollweide-Projection-and-Galactic-Coordinates">Mollweide Projection and Galactic Coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Classification-of-EGRET-Sources">Classification of EGRET Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Interactive-Sky-Visualization-with-PyWWT-(WorldWide-Telescope)">Interactive Sky Visualization with PyWWT (WorldWide Telescope)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Visualization-Explanation-and-Usage">Visualization Explanation and Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Visualizing-EGRET-Sources-on-the-Interactive-Sky-Map">Visualizing EGRET Sources on the Interactive Sky Map</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Explanation-of-the-Visualization">Explanation of the Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Layer-Controls-and-Background-Surveys">Layer Controls and Background Surveys</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#BATSE-(Burst-and-Transient-Source-Experiment)"><strong>BATSE (Burst and Transient Source Experiment)</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Objective-of-this-part">Objective of this part</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Retrieving-BATSE-Catalog-Data-from-Vizier">Retrieving BATSE Catalog Data from Vizier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Loading-the-Complete-BATSE-Catalog">Loading the Complete BATSE Catalog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Converting-BATSE-Catalog-to-Pandas-DataFrame">Converting BATSE Catalog to Pandas DataFrame</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Columns-Description:">Columns Description:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Handling-Celestial-Coordinates-(df_batseCoords)">Handling Celestial Coordinates (<code class="docutils literal notranslate"><span class="pre">df_batseCoords</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Coordinate-Explanation:">Coordinate Explanation:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Mollweide Projection and Galactic Coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Extracting-Flux-Data">Extracting Flux Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Merging-DataFrames-with-.merge()">Merging DataFrames with <code class="docutils literal notranslate"><span class="pre">.merge()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Understanding-Flux-Channels">Understanding Flux Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Classifying-Sources-as-Galactic-or-Extragalactic">Classifying Sources as Galactic or Extragalactic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Final-Interactive-Visualization-of-EGRET-and-BATSE-Sources-in-WWT">Final Interactive Visualization of EGRET and BATSE Sources in WWT</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html">Library Imports and Tool Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Defining-the-GRB-Event">Defining the GRB Event</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Downloading-the-GBM-Data-from-HEASARC">Downloading the GBM Data from HEASARC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Inspecting-the-GbmTte-Object">Inspecting the <code class="docutils literal notranslate"><span class="pre">GbmTte</span></code> Object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Cropping-the-Data-Window">Cropping the Data Window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Converting-TTE-to-a-PHAII-Structure">Converting TTE to a PHAII Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Burst-Classification-–-Long-vs-Short-&amp;-Galactic-vs-Extragalactic">Burst Classification – Long vs Short &amp; Galactic vs Extragalactic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Marking-Time-Intervals-of-Interest">Marking Time Intervals of Interest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Prompt‑Phase-Count-Spectrum">Prompt‑Phase Count Spectrum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Energy-Re‑binning-to-Boost-S/N">Energy Re‑binning to Boost S/N</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tercera_practica.html#Spectral-Evolution:-Early-vs-Late-Emission">Spectral Evolution: Early vs Late Emission</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Third Part Observational Techniques</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><strong>EGRET (Energetic Gamma Ray Experiment Telescope)</strong></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Primera_practica.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="EGRET-(Energetic-Gamma-Ray-Experiment-Telescope)">
+<h1><strong>EGRET (Energetic Gamma Ray Experiment Telescope)</strong><a class="headerlink" href="#EGRET-(Energetic-Gamma-Ray-Experiment-Telescope)" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.vizier</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vizier</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mw_plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">MWSkyMap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogNorm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+</pre></div>
+</div>
+</div>
+<section id="Introduction-and-Objective">
+<h2>Introduction and Objective<a class="headerlink" href="#Introduction-and-Objective" title="Link to this heading"></a></h2>
+<p>In this notebook, we will analyze astronomical sources observed by <strong>EGRET (Energetic Gamma Ray Experiment Telescope)</strong>, an instrument aboard NASA’s Compton Gamma-Ray Observatory (CGRO). EGRET was sensitive to gamma rays in the energy range from about <strong>30 MeV to 30 GeV</strong>. It significantly contributed to our understanding of gamma-ray astronomy by identifying various gamma-ray sources such as pulsars, active galactic nuclei (AGN), and gamma-ray bursts.</p>
+<p>Another instrument aboard CGRO, called <strong>BATSE (Burst and Transient Source Experiment)</strong>, detected gamma-ray bursts in a different energy range (<strong>~20 keV to ~8 MeV</strong>). While EGRET focused more on steady gamma-ray sources and higher-energy phenomena, BATSE specialized in detecting transient gamma-ray events.</p>
+<p>Our goal is to retrieve the EGRET catalog sources, examine their sky positions, and categorize the different types of emitting sources.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vizier</span> <span class="o">=</span> <span class="n">Vizier</span><span class="p">()</span> <span class="c1"># this instantiates Vizier with its default parameters</span>
+<span class="n">catalog_list</span> <span class="o">=</span> <span class="n">vizier</span><span class="o">.</span><span class="n">find_catalogs</span><span class="p">(</span><span class="s1">&#39;Third EGRET catalog&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">catalog_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+J/ApJS/123/79 : Third EGRET catalog (3EG) (Hartman+, 1999)
+</pre></div></div>
+</div>
+</section>
+<section id="Querying-Vizier-Catalog">
+<h2>Querying Vizier Catalog<a class="headerlink" href="#Querying-Vizier-Catalog" title="Link to this heading"></a></h2>
+<p>We are using <strong>Vizier</strong> from the <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> package, which allows us to search for astronomical catalogs. Here, we are specifically searching for the “Third EGRET catalog,” published by Hartman et al. (1999).</p>
+<p>The printed output helps us confirm the exact catalog identifier we’ll need for data retrieval.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vizier</span><span class="o">.</span><span class="n">ROW_LIMIT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">EGRET_cat</span> <span class="o">=</span> <span class="n">vizier</span><span class="o">.</span><span class="n">get_catalogs</span><span class="p">(</span><span class="s2">&quot;J/ApJS/123/79&quot;</span><span class="p">)</span>
+<span class="n">EGRET_cat</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+TableList with 5 tables:
+        &#39;0:J/ApJS/123/79/3eg&#39; with 10 column(s) and 271 row(s)
+        &#39;1:J/ApJS/123/79/fluxes&#39; with 9 column(s) and 5245 row(s)
+        &#39;2:J/ApJS/123/79/table1&#39; with 7 column(s) and 169 row(s)
+        &#39;3:J/ApJS/123/79/notes&#39; with 2 column(s) and 112 row(s)
+        &#39;4:J/ApJS/123/79/refs&#39; with 2 column(s) and 27 row(s)
+</pre></div></div>
+</div>
+</section>
+<section id="Retrieving-the-Complete-EGRET-Catalog">
+<h2>Retrieving the Complete EGRET Catalog<a class="headerlink" href="#Retrieving-the-Complete-EGRET-Catalog" title="Link to this heading"></a></h2>
+<p>We set <code class="docutils literal notranslate"><span class="pre">vizier.ROW_LIMIT</span> <span class="pre">=</span> <span class="pre">-1</span></code> to ensure that all available rows are retrieved from the catalog query. By default, Vizier limits the number of rows returned, and setting it to <code class="docutils literal notranslate"><span class="pre">-1</span></code> removes any limit, allowing complete data extraction.</p>
+<p>We store the retrieved catalogs into the variable <code class="docutils literal notranslate"><span class="pre">EGRET_cat</span></code>, which is a list of tables returned by Vizier. <code class="docutils literal notranslate"><span class="pre">EGRET_cat[0]</span></code> selects the first table in this list, which contains the main catalog information of interest, including coordinates, fluxes, and source identifications.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EGRET_cat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><i>Table length=271</i>
+<table id="table4536138112" class="table-striped table-bordered table-condensed">
+<thead><tr><th>3EG</th><th>RAJ2000</th><th>DEJ2000</th><th>theta95</th><th>F</th><th>e_F</th><th>Sp-Index</th><th>ID</th><th>Note</th><th>r_ID</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>deg</th><th>1e-08 ph / (s cm2)</th><th>1e-08 ph / (s cm2)</th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>str10</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>str1</th><th>str6</th><th>str10</th></tr></thead>
+<tr><td>J0010+7309</td><td>2.56</td><td>73.17</td><td>0.240</td><td>42.3</td><td>5.5</td><td>1.85</td><td></td><td>@,em</td><td>1,2</td></tr>
+<tr><td>J0038-0949</td><td>9.74</td><td>-9.82</td><td>0.590</td><td>12.0</td><td>3.7</td><td>2.70</td><td></td><td></td><td></td></tr>
+<tr><td>J0118+0248</td><td>19.60</td><td>2.81</td><td>1.160</td><td>20.3</td><td>5.8</td><td>2.63</td><td>a</td><td>C</td><td>1</td></tr>
+<tr><td>J0130-1758</td><td>22.70</td><td>-17.97</td><td>0.970</td><td>11.6</td><td>3.0</td><td>2.50</td><td>a</td><td></td><td>1</td></tr>
+<tr><td>J0159-3603</td><td>29.84</td><td>-36.06</td><td>0.790</td><td>9.8</td><td>2.8</td><td>2.89</td><td></td><td></td><td>1</td></tr>
+<tr><td>J0204+1458</td><td>31.11</td><td>14.97</td><td>0.970</td><td>23.6</td><td>5.6</td><td>2.23</td><td>A</td><td>C</td><td>1,3,4</td></tr>
+<tr><td>J0210-5055</td><td>32.58</td><td>-50.93</td><td>0.140</td><td>85.5</td><td>4.5</td><td>1.99</td><td>A</td><td></td><td>1,3,4</td></tr>
+<tr><td>J0215+1123</td><td>34.00</td><td>11.38</td><td>1.060</td><td>18.0</td><td>5.0</td><td>2.03</td><td></td><td>C</td><td>1</td></tr>
+<tr><td>J0222+4253</td><td>35.70</td><td>42.90</td><td>0.310</td><td>18.7</td><td>2.9</td><td>2.01</td><td>A</td><td>@</td><td>1,4,5,6,7</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>J2251-1341</td><td>342.80</td><td>-13.69</td><td>0.770</td><td>40.4</td><td>9.5</td><td>2.43</td><td></td><td>em</td><td></td></tr>
+<tr><td>J2254+1601</td><td>343.51</td><td>16.02</td><td>0.280</td><td>53.7</td><td>4.0</td><td>2.21</td><td>A</td><td>C</td><td>1,3,4</td></tr>
+<tr><td>J2255+1943</td><td>343.99</td><td>19.73</td><td>0.870</td><td>62.2</td><td>21.5</td><td>2.36</td><td>a</td><td>em,C</td><td></td></tr>
+<tr><td>J2255-5012</td><td>343.99</td><td>-50.21</td><td>0.700</td><td>23.6</td><td>7.4</td><td>2.79</td><td></td><td>em</td><td></td></tr>
+<tr><td>J2314+4426</td><td>348.70</td><td>44.44</td><td>0.780</td><td>40.4</td><td>10.0</td><td>2.34</td><td></td><td>em</td><td></td></tr>
+<tr><td>J2321-0328</td><td>350.41</td><td>-3.48</td><td>1.240</td><td>38.2</td><td>10.1</td><td>--</td><td>A</td><td></td><td>10,11,20</td></tr>
+<tr><td>J2352+3752</td><td>358.10</td><td>37.88</td><td>0.940</td><td>37.5</td><td>10.3</td><td>2.47</td><td>a</td><td>em,C</td><td>10,20</td></tr>
+<tr><td>J2358+4604</td><td>359.57</td><td>46.07</td><td>0.680</td><td>14.3</td><td>3.7</td><td>2.38</td><td>A</td><td>em,C</td><td></td></tr>
+<tr><td>J2359+2041</td><td>359.99</td><td>20.70</td><td>1.040</td><td>16.0</td><td>4.7</td><td>2.09</td><td>A</td><td>C</td><td>1,3,4</td></tr>
+</table></div></div>
+</div>
+</section>
+<section id="Catalog-Table-Explanation">
+<h2>Catalog Table Explanation<a class="headerlink" href="#Catalog-Table-Explanation" title="Link to this heading"></a></h2>
+<p>The main EGRET catalog (<code class="docutils literal notranslate"><span class="pre">EGRET_cat[0]</span></code>) provides crucial information about each gamma-ray source detected:</p>
+<ul class="simple">
+<li><p><strong>3EG</strong>: Source identifier.</p></li>
+<li><p><strong>RAJ2000 &amp; DEJ2000</strong>: Right Ascension and Declination coordinates (in degrees), corresponding to the J2000 celestial coordinate system.</p></li>
+<li><p><strong>theta95</strong>: Positional uncertainty radius (degrees), within which there is a 95% probability that the true source position lies.</p></li>
+<li><p><strong>F</strong>: Measured photon flux, given in units of (10^{-8}) photons (<span class="math">\text{cm}</span><sup>{-2}:nbsphinx-math:</sup>text{s}``{-1}).</p></li>
+<li><p><strong>e_F</strong>: Error associated with the photon flux measurement.</p></li>
+<li><p><strong>Sp-Index</strong>: Spectral index describing how flux changes with photon energy.</p></li>
+<li><p><strong>ID</strong>: Identification status of the source (A or a for confirmed or probable identifications).</p></li>
+<li><p><strong>Note</strong>: Additional notes regarding the source (e.g., ‘em’ indicates extended emission).</p></li>
+<li><p><strong>r_ID</strong>: References providing detailed source identification or analysis.</p></li>
+</ul>
+<p>We convert this table to a pandas DataFrame for easier data manipulation.</p>
+</section>
+<section id="Data-Conversion-to-pandas-DataFrame">
+<h2>Data Conversion to pandas DataFrame<a class="headerlink" href="#Data-Conversion-to-pandas-DataFrame" title="Link to this heading"></a></h2>
+<p>We converted the Vizier table into a pandas DataFrame (<code class="docutils literal notranslate"><span class="pre">df_egret</span></code>) to take advantage of pandas’ powerful and flexible data analysis capabilities, such as filtering, grouping, and visualizing the data efficiently.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_egret</span> <span class="o">=</span> <span class="n">EGRET_cat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">df_egret</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>3EG</th>
+      <th>RAJ2000</th>
+      <th>DEJ2000</th>
+      <th>theta95</th>
+      <th>F</th>
+      <th>e_F</th>
+      <th>Sp-Index</th>
+      <th>ID</th>
+      <th>Note</th>
+      <th>r_ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>J0010+7309</td>
+      <td>2.560000</td>
+      <td>73.169998</td>
+      <td>0.24</td>
+      <td>42.299999</td>
+      <td>5.5</td>
+      <td>1.85</td>
+      <td></td>
+      <td>@,em</td>
+      <td>1,2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>J0038-0949</td>
+      <td>9.740000</td>
+      <td>-9.820000</td>
+      <td>0.59</td>
+      <td>12.000000</td>
+      <td>3.7</td>
+      <td>2.70</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>J0118+0248</td>
+      <td>19.600000</td>
+      <td>2.810000</td>
+      <td>1.16</td>
+      <td>20.299999</td>
+      <td>5.8</td>
+      <td>2.63</td>
+      <td>a</td>
+      <td>C</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>J0130-1758</td>
+      <td>22.700001</td>
+      <td>-17.969999</td>
+      <td>0.97</td>
+      <td>11.600000</td>
+      <td>3.0</td>
+      <td>2.50</td>
+      <td>a</td>
+      <td></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>J0159-3603</td>
+      <td>29.840000</td>
+      <td>-36.060001</td>
+      <td>0.79</td>
+      <td>9.800000</td>
+      <td>2.8</td>
+      <td>2.89</td>
+      <td></td>
+      <td></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>266</th>
+      <td>J2314+4426</td>
+      <td>348.700012</td>
+      <td>44.439999</td>
+      <td>0.78</td>
+      <td>40.400002</td>
+      <td>10.0</td>
+      <td>2.34</td>
+      <td></td>
+      <td>em</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>267</th>
+      <td>J2321-0328</td>
+      <td>350.410004</td>
+      <td>-3.480000</td>
+      <td>1.24</td>
+      <td>38.200001</td>
+      <td>10.1</td>
+      <td>NaN</td>
+      <td>A</td>
+      <td></td>
+      <td>10,11,20</td>
+    </tr>
+    <tr>
+      <th>268</th>
+      <td>J2352+3752</td>
+      <td>358.100006</td>
+      <td>37.880001</td>
+      <td>0.94</td>
+      <td>37.500000</td>
+      <td>10.3</td>
+      <td>2.47</td>
+      <td>a</td>
+      <td>em,C</td>
+      <td>10,20</td>
+    </tr>
+    <tr>
+      <th>269</th>
+      <td>J2358+4604</td>
+      <td>359.570007</td>
+      <td>46.070000</td>
+      <td>0.68</td>
+      <td>14.300000</td>
+      <td>3.7</td>
+      <td>2.38</td>
+      <td>A</td>
+      <td>em,C</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>270</th>
+      <td>J2359+2041</td>
+      <td>359.989990</td>
+      <td>20.700001</td>
+      <td>1.04</td>
+      <td>16.000000</td>
+      <td>4.7</td>
+      <td>2.09</td>
+      <td>A</td>
+      <td>C</td>
+      <td>1,3,4</td>
+    </tr>
+  </tbody>
+</table>
+<p>271 rows × 10 columns</p>
+</div></div>
+</div>
+<p>Radec, F, e_F. He visto que los agn son fuentes extendidas y los pulsares son mas compactos, queda divino</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_egret</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;3EG&#39;, &#39;RAJ2000&#39;, &#39;DEJ2000&#39;, &#39;theta95&#39;, &#39;F&#39;, &#39;e_F&#39;, &#39;Sp-Index&#39;, &#39;ID&#39;,
+       &#39;Note&#39;, &#39;r_ID&#39;],
+      dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+</section>
+<section id="Columns-Description">
+<h2>Columns Description<a class="headerlink" href="#Columns-Description" title="Link to this heading"></a></h2>
+<p>The columns in the DataFrame are:</p>
+<ul class="simple">
+<li><p><strong>3EG</strong>: EGRET source designation.</p></li>
+<li><p><strong>RAJ2000, DEJ2000</strong>: Celestial coordinates (Right Ascension and Declination) in degrees.</p></li>
+<li><p><strong>theta95</strong>: Angular radius uncertainty in degrees.</p></li>
+<li><p><strong>F</strong>: Gamma-ray photon flux.</p></li>
+<li><p><strong>e_F</strong>: Uncertainty in photon flux.</p></li>
+<li><p><strong>Sp-Index</strong>: Spectral index, indicating the energy distribution of gamma-ray photons.</p></li>
+<li><p><strong>ID</strong>: Source identification flags (capital letters indicate confident identification, lower case indicates less certain identifications).</p></li>
+<li><p><strong>Note</strong>: Specific notes indicating particular attributes or peculiarities, such as extended emission.</p></li>
+<li><p><strong>r_ID</strong>: References for detailed identification and analysis.</p></li>
+</ul>
+<p>Understanding these columns will be essential for subsequent analyses, such as spatial distribution of sources and classification by source type.</p>
+</section>
+<section id="Counting-Object-Types:-Manual-vs.-Pandas-Approach">
+<h2>Counting Object Types: Manual vs. Pandas Approach<a class="headerlink" href="#Counting-Object-Types:-Manual-vs.-Pandas-Approach" title="Link to this heading"></a></h2>
+<p>Initially, one could rudimentarily count and classify objects by iterating through rows using loops and conditional statements. However, pandas provides a much simpler, efficient, and powerful approach using the built-in <code class="docutils literal notranslate"><span class="pre">.value_counts()</span></code> method.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.value_counts()</span></code> method returns the count of unique occurrences for a specified column, quickly summarizing how many sources belong to each type (identified by the ‘ID’ column).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df_egret</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+67
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df_egret</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+27
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df_egret</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+5
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ID
+     170
+A     67
+a     27
+P      5
+S      1
+G      1
+Name: count, dtype: int64
+</pre></div></div>
+</div>
+</section>
+<section id="Handling-Unclassified-Sources-(ID-Column)">
+<h2>Handling Unclassified Sources (ID Column)<a class="headerlink" href="#Handling-Unclassified-Sources-(ID-Column)" title="Link to this heading"></a></h2>
+<p>In the EGRET catalog, some sources have no identification (<code class="docutils literal notranslate"><span class="pre">ID</span></code> column empty). To clearly represent these unclassified objects, we assign the letter ‘U’ (Unclassified):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_egret</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span>
+<span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ID
+U    170
+A     67
+a     27
+P      5
+S      1
+G      1
+Name: count, dtype: int64
+</pre></div></div>
+</div>
+<section id="Here's-how-this-works:">
+<h3>Here’s how this works:<a class="headerlink" href="#Here's-how-this-works:" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">df_egret.loc[condition,</span> <span class="pre">column]</span></code>: Selects rows based on the given condition (<code class="docutils literal notranslate"><span class="pre">df_egret['ID']</span> <span class="pre">==</span> <span class="pre">''</span></code>, meaning empty IDs).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">=</span> <span class="pre">'U'</span></code>: Assigns the letter <code class="docutils literal notranslate"><span class="pre">'U'</span></code> to all cells that meet the condition (previously empty).</p></li>
+<li><p>Checking again with <code class="docutils literal notranslate"><span class="pre">.value_counts()</span></code> shows the updated frequency, including unclassified objects clearly labeled with <code class="docutils literal notranslate"><span class="pre">'U'</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="Working-with-Coordinates-(df_egretCoords)">
+<h2>Working with Coordinates (<code class="docutils literal notranslate"><span class="pre">df_egretCoords</span></code>)<a class="headerlink" href="#Working-with-Coordinates-(df_egretCoords)" title="Link to this heading"></a></h2>
+<p>The dataframe <code class="docutils literal notranslate"><span class="pre">df_egretCoords</span></code> stores celestial coordinates (Right Ascension <code class="docutils literal notranslate"><span class="pre">RAJ2000</span></code> and Declination <code class="docutils literal notranslate"><span class="pre">DEJ2000</span></code>) from the original catalog, converted into a structured object (<code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code>) using the Astropy package.</p>
+<p>When we print the first 10 entries with <code class="docutils literal notranslate"><span class="pre">df_egretCoords[:10]</span></code>, we see clearly structured coordinate information:</p>
+<ul class="simple">
+<li><p><strong>RA (Right Ascension)</strong>: Measures angular distance eastward along the celestial equator.</p></li>
+<li><p><strong>DEC (Declination)</strong>: Measures angular distance north or south from the celestial equator.</p></li>
+</ul>
+<p>Astropy’s <code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code> simplifies coordinate manipulation, transformation between coordinate systems, and astronomical calculations, which we will leverage later for plotting and further spatial analysis.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_egretCoords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">],</span><span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">],</span>
+                         <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_egretCoords</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;SkyCoord (ICRS): (ra, dec) in deg
+    [( 2.56,  73.17), ( 9.74,  -9.82), (19.6 ,   2.81), (22.7 , -17.97),
+     (29.84, -36.06), (31.11,  14.97), (32.58, -50.93), (34.  ,  11.38),
+     (35.7 ,  42.9 ), (37.32,  61.86)]&gt;
+</pre></div></div>
+</div>
+</section>
+<section id="Mollweide-Projection-and-Galactic-Coordinates">
+<h2>Mollweide Projection and Galactic Coordinates<a class="headerlink" href="#Mollweide-Projection-and-Galactic-Coordinates" title="Link to this heading"></a></h2>
+<p>The Mollweide projection is a type of map projection commonly used in astronomy to display celestial data on a 2D elliptical map. It’s especially useful for representing the whole sky in a visually intuitive way, preserving the relative area of objects at different positions.</p>
+<p>In astronomy, galactic coordinates (longitude <code class="docutils literal notranslate"><span class="pre">l</span></code> and latitude <code class="docutils literal notranslate"><span class="pre">b</span></code>) measure positions relative to our Galaxy’s plane:</p>
+<ul class="simple">
+<li><p><strong>Galactic longitude (``l``)</strong>: Angular distance measured along the galactic plane from the Galactic Center.</p></li>
+<li><p><strong>Galactic latitude (``b``)</strong>: Angular distance above or below the galactic plane.</p></li>
+</ul>
+<p>When plotting with the Mollweide projection in Matplotlib, angles must be in radians instead of degrees. This is why we convert our galactic coordinates from degrees to radians before plotting.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="n">df_egretCoords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">wrap_at</span><span class="p">(</span><span class="mi">180</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">radian</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">df_egretCoords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">radian</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">ax</span>  <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;mollweide&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;3EC&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Mollweide&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Primera_practica_26_0.png" src="_images/Primera_practica_26_0.png" />
+</div>
+</div>
+</section>
+<section id="Classification-of-EGRET-Sources">
+<h2>Classification of EGRET Sources<a class="headerlink" href="#Classification-of-EGRET-Sources" title="Link to this heading"></a></h2>
+<p>To facilitate analysis and visualization, we classify the EGRET gamma-ray sources based on their astrophysical nature. We define the following labels based on the source identifications provided by the EGRET catalog (<code class="docutils literal notranslate"><span class="pre">ID</span></code> column):</p>
+<ul class="simple">
+<li><p><strong>A (Confirmed AGN)</strong>: Active Galactic Nuclei (AGN) sources that have been confidently identified. AGNs are highly energetic extragalactic objects powered by accretion onto supermassive black holes at the center of distant galaxies. They are typically characterized by extended gamma-ray emission regions.</p></li>
+<li><p><strong>a (AGN Candidate)</strong>: Sources suspected to be AGNs but with less certainty compared to confirmed AGNs. These require additional observational confirmation or more detailed follow-up studies to firmly establish their identity.</p></li>
+<li><p><strong>P (Pulsar)</strong>: Compact neutron stars emitting beams of radiation along their magnetic poles, observable as regular pulses when the beams sweep across Earth’s line of sight. Pulsars are characterized by their compact emission regions and periodic gamma-ray signals.</p></li>
+<li><p><strong>S (Supernova Remnant / SNR-PWN)</strong>: Gamma-ray sources associated with remnants of supernova explosions (SNR) and pulsar wind nebulae (PWN). These sources typically have diffuse emission regions and are associated with recent stellar explosions and the energetic winds emitted by pulsars.</p></li>
+<li><p><strong>G (Galactic Center)</strong>: Gamma-ray emission associated with the Galactic Center region. This region, rich in dense gas, stars, and compact objects including a supermassive black hole (Sagittarius A*), shows complex and diffuse gamma-ray emission due to numerous interacting sources and processes.</p></li>
+<li><p><strong>U (Unidentified)</strong>: Sources without any confident or probable astrophysical classification. These objects remain unidentified and are subjects for future detailed observational campaigns or theoretical analysis.</p></li>
+</ul>
+<p>By applying these clear classifications, we can investigate the spatial distribution, flux characteristics, and spectral behavior of each type of gamma-ray source in the EGRET catalog effectively.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;Confirmed AGN&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;AGN Candidate&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="s1">&#39;Pulsar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="s1">&#39;SN Remnant / SNR-PWN&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="s1">&#39;Galactic Center&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="s1">&#39;Unidentified&#39;</span>
+<span class="p">}</span>
+
+<span class="n">color_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="s1">&#39;royalblue&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="s1">&#39;seagreen&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="s1">&#39;gold&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="s1">&#39;grey&#39;</span>
+<span class="p">}</span>
+
+<span class="n">masks</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">label_map</span><span class="p">}</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;mollweide&#39;</span><span class="p">)</span>
+<span class="n">mw</span> <span class="o">=</span> <span class="n">MWSkyMap</span><span class="p">(</span><span class="n">background</span><span class="o">=</span><span class="s2">&quot;gamma&quot;</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;mollweide&#39;</span><span class="p">)</span>
+<span class="n">mw</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">masks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">l</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+            <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color_map</span><span class="p">[</span><span class="n">k</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label_map</span><span class="p">[</span><span class="n">k</span><span class="p">],</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span>
+        <span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;l (rad)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;b (rad)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;3EG Sources by Type – Mollweide Projection&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+    <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span>
+    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">,</span>
+    <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Primera_practica_28_0.png" src="_images/Primera_practica_28_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pywwt.jupyter</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_app</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wwt</span> <span class="o">=</span> <span class="k">await</span> <span class="n">connect_to_app</span><span class="p">()</span><span class="o">.</span><span class="n">becomes_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wwt</span><span class="o">.</span><span class="n">layer_controls</span>
+<span class="c1">#This command opens the interactive layer controls within your WWT visualization. You can manage visibility, opacity, and styling of layers added to the WWT application through your notebook.</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "7914daab1e334314aeed2adb56ad531c", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">egret_layer</span> <span class="o">=</span> <span class="n">wwt</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">add_table_layer</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">EGRET_cat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;Sky&#39;</span><span class="p">,</span>
+                                         <span class="n">lon_att</span><span class="o">=</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">,</span> <span class="n">lat_att</span><span class="o">=</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">)</span>
+
+<span class="c1">#add_table_layer: Adds a new layer of astronomical sources from your dataset onto the interactive sky map.</span>
+<span class="c1">#frame=&#39;Sky&#39;: Specifies that the coordinates are in standard celestial (equatorial) coordinates.</span>
+<span class="c1">#lon_att=&#39;RAJ2000&#39; &amp; lat_att=&#39;DEJ2000&#39;: Columns containing the source positions (Right Ascension and Declination).</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Interactive-Sky-Visualization-with-PyWWT-(WorldWide-Telescope)">
+<h2>Interactive Sky Visualization with PyWWT (WorldWide Telescope)<a class="headerlink" href="#Interactive-Sky-Visualization-with-PyWWT-(WorldWide-Telescope)" title="Link to this heading"></a></h2>
+<p>To visualize astronomical data interactively, we use <strong>PyWWT</strong>, a Python package that provides integration with the <a class="reference external" href="https://worldwidetelescope.org/home">WorldWide Telescope (WWT)</a>. WWT is an interactive, web-based astronomical visualization tool developed by the American Astronomical Society (AAS) and Microsoft Research.</p>
+<section id="Visualization-Explanation-and-Usage">
+<h3>Visualization Explanation and Usage<a class="headerlink" href="#Visualization-Explanation-and-Usage" title="Link to this heading"></a></h3>
+<p>Once the EGRET catalog is loaded into WWT, you can interactively explore the sky:</p>
+<ul class="simple">
+<li><p><strong>Zoom in and out</strong> smoothly to view detailed source distribution.</p></li>
+<li><p><strong>Click on individual sources</strong> to view detailed metadata (e.g., flux, spectral index, source type).</p></li>
+<li><p><strong>Overlay multiple catalogs</strong> or imagery data for comparative studies (e.g., optical images, other gamma-ray catalogs).</p></li>
+</ul>
+<p>This interactive map provides an intuitive way to visually examine the distribution of gamma-ray sources, understand their spatial context, and analyze relationships with other astronomical phenomena in real-time.</p>
+<p><strong>Useful Links:</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pywwt.readthedocs.io/en/latest/">PyWWT Documentation</a></p></li>
+<li><p><a class="reference external" href="https://worldwidetelescope.org/home">WorldWide Telescope Official Site</a></p></li>
+<li><p><a class="reference external" href="https://pywwt.readthedocs.io/en/latest/install.html">Installing PyWWT</a></p></li>
+</ul>
+</section>
+</section>
+<section id="Visualizing-EGRET-Sources-on-the-Interactive-Sky-Map">
+<h2>Visualizing EGRET Sources on the Interactive Sky Map<a class="headerlink" href="#Visualizing-EGRET-Sources-on-the-Interactive-Sky-Map" title="Link to this heading"></a></h2>
+<p>The images above show the EGRET gamma-ray source catalog displayed in the interactive sky map provided by <a class="reference external" href="https://worldwidetelescope.org/home">WorldWide Telescope (WWT)</a>, using the Python interface <code class="docutils literal notranslate"><span class="pre">pywwt</span></code>.</p>
+<section id="Explanation-of-the-Visualization">
+<h3>Explanation of the Visualization<a class="headerlink" href="#Explanation-of-the-Visualization" title="Link to this heading"></a></h3>
+<p>Each <strong>magenta point</strong> represents a source from the EGRET catalog, positioned according to its celestial coordinates (RAJ2000 and DEJ2000). These sources have been plotted as a <strong>custom table layer</strong> using the <code class="docutils literal notranslate"><span class="pre">add_table_layer()</span></code> function.</p>
+<p>The <strong>marker style</strong> and <strong>color</strong> can be customized within the WWT Layer Manager. In this case:</p>
+<ul class="simple">
+<li><p>The marker is set to <strong>“Gaussian”</strong>, which produces a glowing, smooth visual effect around each point, making the sources easier to spot.</p></li>
+<li><p>The color is <strong>magenta</strong>, helping them stand out against the dark background of the sky.</p></li>
+</ul>
+</section>
+<section id="Layer-Controls-and-Background-Surveys">
+<h3>Layer Controls and Background Surveys<a class="headerlink" href="#Layer-Controls-and-Background-Surveys" title="Link to this heading"></a></h3>
+<p>The second image shows the <strong>layer control panel</strong>, where users can adjust:</p>
+<ul class="simple">
+<li><p><strong>The active layer</strong> (in this case, the table of EGRET sources).</p></li>
+<li><p><strong>The background survey</strong>, which is set to <strong>“Digitized Sky Survey (Color)”</strong> — this provides a high-resolution optical image of the sky.</p></li>
+<li><p><strong>The overlay</strong> is set to <strong>“EGRET Soft (Gamma)”</strong>, which displays the background gamma-ray intensity map based on EGRET data.</p></li>
+</ul>
+<p>By combining:</p>
+<ul class="simple">
+<li><p>The <strong>gamma-ray background</strong> from EGRET,</p></li>
+<li><p>The <strong>optical background</strong> from DSS,</p></li>
+<li><p>And the <strong>catalog of individual EGRET sources</strong>,</p></li>
+</ul>
+<p>…users can intuitively compare where gamma-ray sources are located relative to visible structures in the sky (like the Galactic Plane), and evaluate how well cataloged sources match gamma-ray emission regions.</p>
+<p>This is a powerful tool for exploring correlations between high-energy astrophysical sources and their visual counterparts.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;EGRET.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Primera_practica_36_0.png" src="_images/Primera_practica_36_0.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="BATSE-(Burst-and-Transient-Source-Experiment)">
+<h1><strong>BATSE (Burst and Transient Source Experiment)</strong><a class="headerlink" href="#BATSE-(Burst-and-Transient-Source-Experiment)" title="Link to this heading"></a></h1>
+<p>Let’s start in the same way than we have done with EGRET!</p>
+<section id="Objective-of-this-part">
+<h2>Objective of this part<a class="headerlink" href="#Objective-of-this-part" title="Link to this heading"></a></h2>
+<p>In this notebook, we will analyze gamma-ray bursts (GRBs) detected by the <strong>BATSE (Burst and Transient Source Experiment)</strong> instrument aboard NASA’s Compton Gamma-Ray Observatory (CGRO). BATSE operated primarily in the energy range from approximately <strong>20 keV to 8 MeV</strong>, detecting gamma-ray bursts, which are intense and brief flashes of gamma radiation.</p>
+<p>The goal is to explore the spatial distribution of BATSE gamma-ray bursts, analyze their positions, and determine their possible relation to our Galaxy (the Milky Way) and extragalactic origins.</p>
+</section>
+<section id="Retrieving-BATSE-Catalog-Data-from-Vizier">
+<h2>Retrieving BATSE Catalog Data from Vizier<a class="headerlink" href="#Retrieving-BATSE-Catalog-Data-from-Vizier" title="Link to this heading"></a></h2>
+<p>We use <strong>Vizier</strong>, accessed via the <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> package, to find and retrieve the Fourth BATSE Burst Revised Catalog (Paciesas et al., 1999). This catalog includes information on gamma-ray bursts (GRBs) detected by BATSE during its operation. The printed output confirms the correct catalog identifier (<code class="docutils literal notranslate"><span class="pre">IX/20A</span></code>) needed to retrieve the detailed dataset.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vizier</span> <span class="o">=</span> <span class="n">Vizier</span><span class="p">()</span> <span class="c1"># this instantiates Vizier with its default parameters</span>
+<span class="n">catalog_list</span> <span class="o">=</span> <span class="n">vizier</span><span class="o">.</span><span class="n">find_catalogs</span><span class="p">(</span><span class="s1">&#39;batse&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">catalog_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+IX/20A : The Fourth BATSE Burst Revised Catalog (Paciesas+ 1999)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vizier</span><span class="o">.</span><span class="n">ROW_LIMIT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">BATSE_cat</span> <span class="o">=</span> <span class="n">vizier</span><span class="o">.</span><span class="n">get_catalogs</span><span class="p">(</span><span class="s2">&quot;IX/20A&quot;</span><span class="p">)</span>
+<span class="n">BATSE_cat</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+TableList with 6 tables:
+        &#39;0:IX/20A/batse&#39; with 8 column(s) and 2704 row(s)
+        &#39;1:IX/20A/4brcom&#39; with 3 column(s) and 3061 row(s)
+        &#39;2:IX/20A/duration&#39; with 7 column(s) and 2041 row(s)
+        &#39;3:IX/20A/flux&#39; with 7 column(s) and 2135 row(s)
+        &#39;4:IX/20A/maxmin&#39; with 7 column(s) and 1323 row(s)
+        &#39;5:IX/20A/ulysses&#39; with 5 column(s) and 147 row(s)
+</pre></div></div>
+</div>
+</section>
+<section id="Loading-the-Complete-BATSE-Catalog">
+<h2>Loading the Complete BATSE Catalog<a class="headerlink" href="#Loading-the-Complete-BATSE-Catalog" title="Link to this heading"></a></h2>
+<p>We set <code class="docutils literal notranslate"><span class="pre">vizier.ROW_LIMIT</span> <span class="pre">=</span> <span class="pre">-1</span></code> to retrieve all available entries from the catalog, removing any default limitation. The resulting table, <code class="docutils literal notranslate"><span class="pre">BATSE_cat[0]</span></code>, contains the main catalog of gamma-ray bursts, including the burst trigger number, time of detection, and celestial coordinates.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BATSE_cat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><i>Table length=2704</i>
+<table id="table4536458064" class="table-striped table-bordered table-condensed">
+<thead><tr><th>TrigNo</th><th>4B</th><th>Uflag</th><th>JD</th><th>Time</th><th>RAJ2000</th><th>DEJ2000</th><th>GLON</th></tr></thead>
+<thead><tr><th></th><th></th><th></th><th>d</th><th>s</th><th>deg</th><th>deg</th><th>deg</th></tr></thead>
+<thead><tr><th>int16</th><th>str11</th><th>str1</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
+<tr><td>105</td><td>4B 910421</td><td></td><td>2448367.5</td><td>33243.756</td><td>270.680</td><td>24.760</td><td>50.750</td></tr>
+<tr><td>107</td><td>4B 910423</td><td></td><td>2448369.5</td><td>71684.716</td><td>193.470</td><td>-8.380</td><td>303.970</td></tr>
+<tr><td>108</td><td>4B 910424</td><td></td><td>2448370.5</td><td>71006.572</td><td>201.310</td><td>-45.410</td><td>309.130</td></tr>
+<tr><td>109</td><td>4B 910425</td><td></td><td>2448371.5</td><td>2265.707</td><td>91.290</td><td>-22.770</td><td>228.990</td></tr>
+<tr><td>110</td><td>4B 910425B</td><td></td><td>2448371.5</td><td>20253.291</td><td>335.940</td><td>25.770</td><td>85.830</td></tr>
+<tr><td>111</td><td>4B 910426</td><td></td><td>2448372.5</td><td>80046.699</td><td>75.820</td><td>-19.510</td><td>219.840</td></tr>
+<tr><td>114</td><td>4B 910427</td><td></td><td>2448373.5</td><td>32720.747</td><td>78.860</td><td>-15.590</td><td>216.870</td></tr>
+<tr><td>121</td><td>4B 910429</td><td></td><td>2448375.5</td><td>11509.803</td><td>174.750</td><td>14.330</td><td>246.480</td></tr>
+<tr><td>130</td><td>4B 910430</td><td></td><td>2448376.5</td><td>61719.147</td><td>135.800</td><td>2.730</td><td>226.690</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>8105</td><td>GRB 000513-</td><td></td><td>2504253.7</td><td>160.730</td><td>160.730</td><td>-12.010</td><td>260.190</td></tr>
+<tr><td>8109</td><td>GRB 000517</td><td></td><td>2460190.6</td><td>107.980</td><td>107.980</td><td>76.740</td><td>137.860</td></tr>
+<tr><td>8110</td><td>GRB 000518</td><td></td><td>2460512.5</td><td>71.330</td><td>71.330</td><td>53.910</td><td>153.220</td></tr>
+<tr><td>8111</td><td>GRB 000519</td><td></td><td>2469888.2</td><td>346.030</td><td>346.030</td><td>3.330</td><td>78.400</td></tr>
+<tr><td>8112</td><td>GRB 000520</td><td></td><td>2480536.3</td><td>234.740</td><td>234.740</td><td>-0.310</td><td>5.640</td></tr>
+<tr><td>8113</td><td>GRB 000521</td><td></td><td>2475266.3</td><td>5.960</td><td>5.960</td><td>-6.250</td><td>104.250</td></tr>
+<tr><td>8116</td><td>GRB 000524</td><td></td><td>2440546.0</td><td>109.190</td><td>109.190</td><td>-41.360</td><td>252.930</td></tr>
+<tr><td>8120</td><td>GRB 000525</td><td></td><td>2477454.2</td><td>280.220</td><td>280.220</td><td>-39.440</td><td>355.920</td></tr>
+<tr><td>8121</td><td>GRB 000526</td><td></td><td>2476094.2</td><td>231.290</td><td>231.290</td><td>-10.320</td><td>353.050</td></tr>
+</table></div></div>
+</div>
+</section>
+<section id="Converting-BATSE-Catalog-to-Pandas-DataFrame">
+<h2>Converting BATSE Catalog to Pandas DataFrame<a class="headerlink" href="#Converting-BATSE-Catalog-to-Pandas-DataFrame" title="Link to this heading"></a></h2>
+<p>We converted the retrieved BATSE catalog into a pandas DataFrame (<code class="docutils literal notranslate"><span class="pre">df_batse</span></code>). This conversion facilitates easier and more efficient data analysis, filtering, and visualization.</p>
+<section id="Columns-Description:">
+<h3>Columns Description:<a class="headerlink" href="#Columns-Description:" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>TrigNo</strong>: BATSE trigger number, a unique identifier for each burst event.</p></li>
+<li><p><strong>4B</strong>: Identifier code for each burst in the catalog.</p></li>
+<li><p><strong>Uflag</strong>: A flag indicating unusual or uncertain bursts (typically empty if standard).</p></li>
+<li><p><strong>JD</strong>: Julian Date of detection.</p></li>
+<li><p><strong>Time</strong>: Precise burst detection time (in seconds).</p></li>
+<li><p><strong>RAJ2000 &amp; DEJ2000</strong>: Right Ascension and Declination coordinates (J2000 celestial system).</p></li>
+<li><p><strong>GLON</strong>: Galactic Longitude (position along the Galactic plane).</p></li>
+</ul>
+<p>This DataFrame structure simplifies further processing and analysis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_batse</span> <span class="o">=</span> <span class="n">BATSE_cat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">df_batse</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TrigNo</th>
+      <th>4B</th>
+      <th>Uflag</th>
+      <th>JD</th>
+      <th>Time</th>
+      <th>RAJ2000</th>
+      <th>DEJ2000</th>
+      <th>GLON</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>105</td>
+      <td>4B 910421</td>
+      <td></td>
+      <td>2448367.5</td>
+      <td>33243.756</td>
+      <td>270.679993</td>
+      <td>24.760000</td>
+      <td>50.750000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>107</td>
+      <td>4B 910423</td>
+      <td></td>
+      <td>2448369.5</td>
+      <td>71684.716</td>
+      <td>193.470001</td>
+      <td>-8.380000</td>
+      <td>303.970001</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>108</td>
+      <td>4B 910424</td>
+      <td></td>
+      <td>2448370.5</td>
+      <td>71006.572</td>
+      <td>201.309998</td>
+      <td>-45.410000</td>
+      <td>309.130005</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>109</td>
+      <td>4B 910425</td>
+      <td></td>
+      <td>2448371.5</td>
+      <td>2265.707</td>
+      <td>91.290001</td>
+      <td>-22.770000</td>
+      <td>228.990005</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>110</td>
+      <td>4B 910425B</td>
+      <td></td>
+      <td>2448371.5</td>
+      <td>20253.291</td>
+      <td>335.940002</td>
+      <td>25.770000</td>
+      <td>85.830002</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2699</th>
+      <td>8112</td>
+      <td>GRB 000520</td>
+      <td></td>
+      <td>2480536.3</td>
+      <td>234.740</td>
+      <td>234.740005</td>
+      <td>-0.310000</td>
+      <td>5.640000</td>
+    </tr>
+    <tr>
+      <th>2700</th>
+      <td>8113</td>
+      <td>GRB 000521</td>
+      <td></td>
+      <td>2475266.3</td>
+      <td>5.960</td>
+      <td>5.960000</td>
+      <td>-6.250000</td>
+      <td>104.250000</td>
+    </tr>
+    <tr>
+      <th>2701</th>
+      <td>8116</td>
+      <td>GRB 000524</td>
+      <td></td>
+      <td>2440546.0</td>
+      <td>109.190</td>
+      <td>109.190002</td>
+      <td>-41.360001</td>
+      <td>252.929993</td>
+    </tr>
+    <tr>
+      <th>2702</th>
+      <td>8120</td>
+      <td>GRB 000525</td>
+      <td></td>
+      <td>2477454.2</td>
+      <td>280.220</td>
+      <td>280.220001</td>
+      <td>-39.439999</td>
+      <td>355.920013</td>
+    </tr>
+    <tr>
+      <th>2703</th>
+      <td>8121</td>
+      <td>GRB 000526</td>
+      <td></td>
+      <td>2476094.2</td>
+      <td>231.290</td>
+      <td>231.289993</td>
+      <td>-10.320000</td>
+      <td>353.049988</td>
+    </tr>
+  </tbody>
+</table>
+<p>2704 rows × 8 columns</p>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Handling-Celestial-Coordinates-(df_batseCoords)">
+<h2>Handling Celestial Coordinates (<code class="docutils literal notranslate"><span class="pre">df_batseCoords</span></code>)<a class="headerlink" href="#Handling-Celestial-Coordinates-(df_batseCoords)" title="Link to this heading"></a></h2>
+<p>We transformed the celestial coordinates from our DataFrame (<code class="docutils literal notranslate"><span class="pre">RAJ2000</span></code>, <code class="docutils literal notranslate"><span class="pre">DEJ2000</span></code>) into structured objects (<code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code>) using the Astropy package. This makes it easier to handle astronomical calculations and coordinate transformations.</p>
+<section id="Coordinate-Explanation:">
+<h3>Coordinate Explanation:<a class="headerlink" href="#Coordinate-Explanation:" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Right Ascension (RA)</strong>: Angular distance measured eastward along the celestial equator.</p></li>
+<li><p><strong>Declination (DEC)</strong>: Angular distance measured north or south from the celestial equator.</p></li>
+</ul>
+<p>Displaying the first 10 coordinates confirms the transformation was successful, and these structured coordinates will facilitate visualization in different coordinate systems.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_batseCoords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">df_batse</span><span class="p">[</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">],</span><span class="n">df_batse</span><span class="p">[</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">],</span>
+                         <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_batseCoords</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;SkyCoord (ICRS): (ra, dec) in deg
+    [(270.68,  24.76), (193.47,  -8.38), (201.31, -45.41),
+     ( 91.29, -22.77), (335.94,  25.77), ( 75.82, -19.51),
+     ( 78.86, -15.59), (174.75,  14.33), (135.8 ,   2.73),
+     (126.54,  -0.23)]&gt;
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="id2">
+<h2>Mollweide Projection and Galactic Coordinates<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>For visualization, we use the <strong>Mollweide projection</strong>, an elliptical projection commonly employed in astronomy to represent the entire celestial sphere in a single, flattened image.</p>
+<p>We convert celestial coordinates (RA, DEC) into Galactic coordinates:</p>
+<ul class="simple">
+<li><p><strong>Galactic Longitude (``l``)</strong>: angular distance along the Galactic plane from the Galactic Center.</p></li>
+<li><p><strong>Galactic Latitude (``b``)</strong>: angular distance perpendicular to the Galactic plane.</p></li>
+</ul>
+<p>Before plotting, these Galactic coordinates must be converted from degrees to radians, as the Mollweide projection in matplotlib expects angles in radians.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="n">df_batseCoords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">wrap_at</span><span class="p">(</span><span class="mi">180</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">radian</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">df_batseCoords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">radian</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span>  <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;mollweide&#39;</span><span class="p">)</span>
+<span class="n">mw1</span> <span class="o">=</span> <span class="n">MWSkyMap</span><span class="p">(</span><span class="n">background</span><span class="o">=</span><span class="s2">&quot;optical&quot;</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="s1">&#39;mollweide&#39;</span><span class="p">)</span>
+<span class="n">mw1</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">df_batse</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_map</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;l (rad)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;b (rad)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Fuentes 3EG por tipo – proyección Mollweide&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Primera_practica_51_0.png" src="_images/Primera_practica_51_0.png" />
+</div>
+</div>
+</section>
+<section id="Extracting-Flux-Data">
+<h2>Extracting Flux Data<a class="headerlink" href="#Extracting-Flux-Data" title="Link to this heading"></a></h2>
+<p>Now, we will focus on extracting and analyzing the flux data from the catalogs. Flux measurements allow us to understand the brightness and energy output of astronomical sources, crucial for identifying and classifying these objects.</p>
+<p>By extracting flux data, we aim to:</p>
+<ul class="simple">
+<li><p>Characterize the brightness and energy distribution of the detected gamma-ray sources.</p></li>
+<li><p>Compare sources within the catalogs (EGRET and BATSE) in terms of their energy emission.</p></li>
+<li><p>Possibly identify interesting correlations between brightness, spectral properties, and object types.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">flux</span> <span class="o">=</span> <span class="n">BATSE_cat</span><span class="p">[</span><span class="s1">&#39;IX/20A/flux&#39;</span><span class="p">]</span>
+<span class="n">df_flux</span> <span class="o">=</span> <span class="n">flux</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">df_flux</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TrigNo</th>
+      <th>F1</th>
+      <th>e_F1</th>
+      <th>F2</th>
+      <th>e_F2</th>
+      <th>F3</th>
+      <th>e_F3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>105</td>
+      <td>8.685000e-07</td>
+      <td>1.089000e-08</td>
+      <td>1.321000e-06</td>
+      <td>1.437000e-08</td>
+      <td>2.047000e-06</td>
+      <td>1.793000e-07</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>107</td>
+      <td>5.503000e-08</td>
+      <td>9.823000e-09</td>
+      <td>5.692000e-08</td>
+      <td>1.032000e-08</td>
+      <td>5.924000e-08</td>
+      <td>2.003000e-08</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>108</td>
+      <td>8.286000e-09</td>
+      <td>6.060000e-09</td>
+      <td>1.495000e-08</td>
+      <td>5.220000e-09</td>
+      <td>3.199000e-08</td>
+      <td>1.236000e-08</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>109</td>
+      <td>4.425000e-06</td>
+      <td>3.965000e-08</td>
+      <td>7.308000e-06</td>
+      <td>4.952000e-08</td>
+      <td>1.765000e-05</td>
+      <td>1.210000e-07</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>110</td>
+      <td>4.503000e-07</td>
+      <td>3.662000e-08</td>
+      <td>4.673000e-07</td>
+      <td>4.065000e-08</td>
+      <td>1.777000e-06</td>
+      <td>1.401000e-07</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2130</th>
+      <td>8111</td>
+      <td>9.579001e-07</td>
+      <td>2.569000e-08</td>
+      <td>9.866000e-07</td>
+      <td>1.931000e-08</td>
+      <td>3.011000e-06</td>
+      <td>5.893000e-08</td>
+    </tr>
+    <tr>
+      <th>2131</th>
+      <td>8112</td>
+      <td>1.295000e-07</td>
+      <td>1.735000e-08</td>
+      <td>1.496000e-07</td>
+      <td>1.429000e-08</td>
+      <td>3.031000e-07</td>
+      <td>3.586000e-08</td>
+    </tr>
+    <tr>
+      <th>2132</th>
+      <td>8116</td>
+      <td>9.395000e-07</td>
+      <td>3.259000e-08</td>
+      <td>1.706000e-06</td>
+      <td>3.376000e-08</td>
+      <td>5.341000e-06</td>
+      <td>9.228000e-08</td>
+    </tr>
+    <tr>
+      <th>2133</th>
+      <td>8120</td>
+      <td>3.056000e-08</td>
+      <td>5.046000e-09</td>
+      <td>5.819000e-08</td>
+      <td>5.329000e-09</td>
+      <td>4.285000e-07</td>
+      <td>1.552000e-08</td>
+    </tr>
+    <tr>
+      <th>2134</th>
+      <td>8121</td>
+      <td>1.865000e-06</td>
+      <td>4.154000e-08</td>
+      <td>1.394000e-06</td>
+      <td>2.748000e-08</td>
+      <td>1.836000e-06</td>
+      <td>6.028000e-08</td>
+    </tr>
+  </tbody>
+</table>
+<p>2135 rows × 7 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Merging-DataFrames-with-.merge()">
+<h2>Merging DataFrames with <code class="docutils literal notranslate"><span class="pre">.merge()</span></code><a class="headerlink" href="#Merging-DataFrames-with-.merge()" title="Link to this heading"></a></h2>
+<p>To consolidate our analysis, we use pandas’ <code class="docutils literal notranslate"><span class="pre">.merge()</span></code> function to combine different DataFrames containing relevant information.</p>
+<p>Here is how <code class="docutils literal notranslate"><span class="pre">.merge()</span></code> works:</p>
+<ul class="simple">
+<li><p>It matches rows from two DataFrames based on a specified common column (or columns), known as the “key”.</p></li>
+<li><p>It combines matched rows into a single, unified DataFrame.</p></li>
+</ul>
+<p>In our notebook, we use <code class="docutils literal notranslate"><span class="pre">.merge()</span></code> to create <code class="docutils literal notranslate"><span class="pre">df_final</span></code> by matching common identifiers (like source names or trigger numbers), ensuring we have all necessary information (coordinates, flux, identification type, etc.) in one coherent structure for further analysis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_final</span> <span class="o">=</span> <span class="n">df_flux</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_batse</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;TrigNo&#39;</span><span class="p">)</span>
+<span class="n">df_final</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TrigNo</th>
+      <th>F1</th>
+      <th>e_F1</th>
+      <th>F2</th>
+      <th>e_F2</th>
+      <th>F3</th>
+      <th>e_F3</th>
+      <th>4B</th>
+      <th>Uflag</th>
+      <th>JD</th>
+      <th>Time</th>
+      <th>RAJ2000</th>
+      <th>DEJ2000</th>
+      <th>GLON</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>105</td>
+      <td>8.685000e-07</td>
+      <td>1.089000e-08</td>
+      <td>1.321000e-06</td>
+      <td>1.437000e-08</td>
+      <td>2.047000e-06</td>
+      <td>1.793000e-07</td>
+      <td>4B 910421</td>
+      <td></td>
+      <td>2448367.5</td>
+      <td>33243.756</td>
+      <td>270.679993</td>
+      <td>24.760000</td>
+      <td>50.750000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>107</td>
+      <td>5.503000e-08</td>
+      <td>9.823000e-09</td>
+      <td>5.692000e-08</td>
+      <td>1.032000e-08</td>
+      <td>5.924000e-08</td>
+      <td>2.003000e-08</td>
+      <td>4B 910423</td>
+      <td></td>
+      <td>2448369.5</td>
+      <td>71684.716</td>
+      <td>193.470001</td>
+      <td>-8.380000</td>
+      <td>303.970001</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>108</td>
+      <td>8.286000e-09</td>
+      <td>6.060000e-09</td>
+      <td>1.495000e-08</td>
+      <td>5.220000e-09</td>
+      <td>3.199000e-08</td>
+      <td>1.236000e-08</td>
+      <td>4B 910424</td>
+      <td></td>
+      <td>2448370.5</td>
+      <td>71006.572</td>
+      <td>201.309998</td>
+      <td>-45.410000</td>
+      <td>309.130005</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>109</td>
+      <td>4.425000e-06</td>
+      <td>3.965000e-08</td>
+      <td>7.308000e-06</td>
+      <td>4.952000e-08</td>
+      <td>1.765000e-05</td>
+      <td>1.210000e-07</td>
+      <td>4B 910425</td>
+      <td></td>
+      <td>2448371.5</td>
+      <td>2265.707</td>
+      <td>91.290001</td>
+      <td>-22.770000</td>
+      <td>228.990005</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>110</td>
+      <td>4.503000e-07</td>
+      <td>3.662000e-08</td>
+      <td>4.673000e-07</td>
+      <td>4.065000e-08</td>
+      <td>1.777000e-06</td>
+      <td>1.401000e-07</td>
+      <td>4B 910425B</td>
+      <td></td>
+      <td>2448371.5</td>
+      <td>20253.291</td>
+      <td>335.940002</td>
+      <td>25.770000</td>
+      <td>85.830002</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2130</th>
+      <td>8111</td>
+      <td>9.579001e-07</td>
+      <td>2.569000e-08</td>
+      <td>9.866000e-07</td>
+      <td>1.931000e-08</td>
+      <td>3.011000e-06</td>
+      <td>5.893000e-08</td>
+      <td>GRB 000519</td>
+      <td></td>
+      <td>2469888.2</td>
+      <td>346.030</td>
+      <td>346.029999</td>
+      <td>3.330000</td>
+      <td>78.400002</td>
+    </tr>
+    <tr>
+      <th>2131</th>
+      <td>8112</td>
+      <td>1.295000e-07</td>
+      <td>1.735000e-08</td>
+      <td>1.496000e-07</td>
+      <td>1.429000e-08</td>
+      <td>3.031000e-07</td>
+      <td>3.586000e-08</td>
+      <td>GRB 000520</td>
+      <td></td>
+      <td>2480536.3</td>
+      <td>234.740</td>
+      <td>234.740005</td>
+      <td>-0.310000</td>
+      <td>5.640000</td>
+    </tr>
+    <tr>
+      <th>2132</th>
+      <td>8116</td>
+      <td>9.395000e-07</td>
+      <td>3.259000e-08</td>
+      <td>1.706000e-06</td>
+      <td>3.376000e-08</td>
+      <td>5.341000e-06</td>
+      <td>9.228000e-08</td>
+      <td>GRB 000524</td>
+      <td></td>
+      <td>2440546.0</td>
+      <td>109.190</td>
+      <td>109.190002</td>
+      <td>-41.360001</td>
+      <td>252.929993</td>
+    </tr>
+    <tr>
+      <th>2133</th>
+      <td>8120</td>
+      <td>3.056000e-08</td>
+      <td>5.046000e-09</td>
+      <td>5.819000e-08</td>
+      <td>5.329000e-09</td>
+      <td>4.285000e-07</td>
+      <td>1.552000e-08</td>
+      <td>GRB 000525</td>
+      <td></td>
+      <td>2477454.2</td>
+      <td>280.220</td>
+      <td>280.220001</td>
+      <td>-39.439999</td>
+      <td>355.920013</td>
+    </tr>
+    <tr>
+      <th>2134</th>
+      <td>8121</td>
+      <td>1.865000e-06</td>
+      <td>4.154000e-08</td>
+      <td>1.394000e-06</td>
+      <td>2.748000e-08</td>
+      <td>1.836000e-06</td>
+      <td>6.028000e-08</td>
+      <td>GRB 000526</td>
+      <td></td>
+      <td>2476094.2</td>
+      <td>231.290</td>
+      <td>231.289993</td>
+      <td>-10.320000</td>
+      <td>353.049988</td>
+    </tr>
+  </tbody>
+</table>
+<p>2135 rows × 14 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Understanding-Flux-Channels">
+<h2>Understanding Flux Channels<a class="headerlink" href="#Understanding-Flux-Channels" title="Link to this heading"></a></h2>
+<p>Gamma-ray observatories, such as BATSE and EGRET, measure photon fluxes in various distinct energy ranges, known as <strong>flux channels</strong>. Each flux channel represents a specific band of gamma-ray energies:</p>
+<p>For <strong>BATSE</strong>, flux measurements are typically divided into multiple channels:</p>
+<ul class="simple">
+<li><p><strong>Channel 1</strong>: 20 keV – 50 keV (softest gamma rays detected by BATSE)</p></li>
+<li><p><strong>Channel 2</strong>: 50 keV – 100 keV</p></li>
+<li><p><strong>Channel 3</strong>: 100 keV – 300 keV</p></li>
+<li><p><strong>Channel 4</strong>: 300 keV – 1 MeV (hardest gamma rays in BATSE standard detection) (we have not extracted this one)</p></li>
+</ul>
+<p>For <strong>EGRET</strong>, flux channels generally span higher energies:</p>
+<ul class="simple">
+<li><p>Typical range: ~30 MeV – 30 GeV (high-energy gamma rays, significantly harder than BATSE’s detections).</p></li>
+</ul>
+<p>Analyzing these flux channels separately allows us to:</p>
+<ul class="simple">
+<li><p>Identify different astrophysical phenomena, as distinct sources emit predominantly in certain energy ranges.</p></li>
+<li><p>Study spectral properties, helping distinguish sources like pulsars, AGNs, or gamma-ray bursts based on their characteristic flux patterns across energy channels.</p></li>
+</ul>
+<p>This detailed flux-channel analysis thus provides deeper insight into the physical processes powering these high-energy sources.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">],</span> <span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">))</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">wrap_at</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">radian</span>   <span class="c1"># longitudes −π..π</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">radian</span>                        <span class="c1"># latitudes −π/2..π/2</span>
+
+<span class="n">energy_ranges</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;F1&#39;</span><span class="p">:</span> <span class="s1">&#39;20–50 keV&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;F2&#39;</span><span class="p">:</span> <span class="s1">&#39;50–100 keV&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;F3&#39;</span><span class="p">:</span> <span class="s1">&#39;100–300 keV&#39;</span>
+<span class="p">}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                         <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;mollweide&#39;</span><span class="p">})</span>
+<span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;F2&#39;</span><span class="p">,</span> <span class="s1">&#39;F3&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">channels</span><span class="p">):</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">df_final</span><span class="p">[</span><span class="n">ch</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+                    <span class="n">norm</span><span class="o">=</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">df_final</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+                                 <span class="n">vmax</span><span class="o">=</span><span class="n">df_final</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span>
+                    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ch</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="n">energy_ranges</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;l (rad)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;b (rad)&#39;</span><span class="p">)</span>
+    <span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span>
+                        <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.07</span><span class="p">)</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Fluence (mJ m$^{-2}$)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribution of BATSE Sources by Energy Channel&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Primera_practica_57_0.png" src="_images/Primera_practica_57_0.png" />
+</div>
+</div>
+</section>
+<section id="Classifying-Sources-as-Galactic-or-Extragalactic">
+<h2>Classifying Sources as Galactic or Extragalactic<a class="headerlink" href="#Classifying-Sources-as-Galactic-or-Extragalactic" title="Link to this heading"></a></h2>
+<p>To distinguish between Galactic and Extragalactic gamma-ray sources, we use the <strong>Galactic latitude</strong> (<code class="docutils literal notranslate"><span class="pre">b</span></code>):</p>
+<ul class="simple">
+<li><p><strong>Galactic sources</strong> typically lie close to the Galactic plane (|b| &lt; 10°).</p></li>
+<li><p><strong>Extragalactic sources</strong> are usually distributed more uniformly and often at higher Galactic latitudes (|b| ≥ 10°).</p></li>
+</ul>
+<p>We add a new column, <code class="docutils literal notranslate"><span class="pre">Origin</span></code>, to our DataFrames to classify sources based on their Galactic latitude.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute Galactic coordinates for each source</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">],</span> <span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">))</span>
+<span class="n">galactic_latitudes</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">deg</span>
+
+<span class="c1"># Classify sources based on galactic latitude</span>
+<span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Galactic&#39;</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="k">else</span> <span class="s1">&#39;Extragalactic&#39;</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">galactic_latitudes</span><span class="p">]</span>
+
+<span class="c1"># Check the classification counts</span>
+<span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Origin
+Extragalactic    1734
+Galactic          401
+Name: count, dtype: int64
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pywwt.jupyter</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_app</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+
+<span class="c1"># Connect to WWT app</span>
+<span class="n">wwt</span> <span class="o">=</span> <span class="k">await</span> <span class="n">connect_to_app</span><span class="p">()</span><span class="o">.</span><span class="n">becomes_ready</span><span class="p">()</span>
+
+<span class="c1"># Prepare EGRET sources</span>
+<span class="n">egret_coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">],</span> <span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">)</span>
+<span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;Gal_lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">egret_coords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Galactic&#39;</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="k">else</span> <span class="s1">&#39;Extragalactic&#39;</span>
+                      <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">df_egret</span><span class="p">[</span><span class="s1">&#39;Gal_lat&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Convert EGRET data to Astropy Table</span>
+<span class="n">egret_table</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df_egret</span><span class="p">)</span>
+
+<span class="c1"># Prepare BATSE sources (assuming df_final is your BATSE dataframe)</span>
+<span class="n">batse_coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">],</span> <span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">)</span>
+<span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Gal_lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batse_coords</span><span class="o">.</span><span class="n">galactic</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Galactic&#39;</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="k">else</span> <span class="s1">&#39;Extragalactic&#39;</span>
+                      <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Gal_lat&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Split BATSE sources</span>
+<span class="n">batse_galactic</span> <span class="o">=</span> <span class="n">df_final</span><span class="p">[</span><span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Galactic&#39;</span><span class="p">]</span>
+<span class="n">batse_extragalactic</span> <span class="o">=</span> <span class="n">df_final</span><span class="p">[</span><span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Extragalactic&#39;</span><span class="p">]</span>
+
+<span class="c1"># Convert BATSE data to Astropy Tables</span>
+<span class="n">batse_gal_table</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">batse_galactic</span><span class="p">)</span>
+<span class="n">batse_extra_table</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">batse_extragalactic</span><span class="p">)</span>
+
+<span class="c1"># Add layers to WWT</span>
+<span class="c1"># EGRET (yellow)</span>
+<span class="n">egret_layer</span> <span class="o">=</span> <span class="n">wwt</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">add_table_layer</span><span class="p">(</span>
+    <span class="n">table</span><span class="o">=</span><span class="n">egret_table</span><span class="p">,</span>
+    <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;Sky&#39;</span><span class="p">,</span>
+    <span class="n">lon_att</span><span class="o">=</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">,</span>
+    <span class="n">lat_att</span><span class="o">=</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">,</span>
+    <span class="n">size_scale</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># BATSE Galactic sources (red)</span>
+<span class="n">batse_galactic_layer</span> <span class="o">=</span> <span class="n">wwt</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">add_table_layer</span><span class="p">(</span>
+    <span class="n">table</span><span class="o">=</span><span class="n">batse_gal_table</span><span class="p">,</span>
+    <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;Sky&#39;</span><span class="p">,</span>
+    <span class="n">lon_att</span><span class="o">=</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">,</span>
+    <span class="n">lat_att</span><span class="o">=</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">,</span>
+    <span class="n">size_scale</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># BATSE Extragalactic sources (cyan)</span>
+<span class="n">batse_extragalactic_layer</span> <span class="o">=</span> <span class="n">wwt</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">add_table_layer</span><span class="p">(</span>
+    <span class="n">table</span><span class="o">=</span><span class="n">batse_extra_table</span><span class="p">,</span>
+    <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;Sky&#39;</span><span class="p">,</span>
+    <span class="n">lon_att</span><span class="o">=</span><span class="s1">&#39;RAJ2000&#39;</span><span class="p">,</span>
+    <span class="n">lat_att</span><span class="o">=</span><span class="s1">&#39;DEJ2000&#39;</span><span class="p">,</span>
+    <span class="n">size_scale</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;cyan&#39;</span>
+<span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wwt</span><span class="o">.</span><span class="n">layer_controls</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "4ff6a6f512094e2bb5884604377c436c", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;BATSE.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Primera_practica_62_0.png" src="_images/Primera_practica_62_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wwt</span><span class="o">.</span><span class="n">layer_controls</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "4ff6a6f512094e2bb5884604377c436c", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+</section>
+<section id="Final-Interactive-Visualization-of-EGRET-and-BATSE-Sources-in-WWT">
+<h2>Final Interactive Visualization of EGRET and BATSE Sources in WWT<a class="headerlink" href="#Final-Interactive-Visualization-of-EGRET-and-BATSE-Sources-in-WWT" title="Link to this heading"></a></h2>
+<p>The interactive visualization above, generated using the <strong>WorldWide Telescope (WWT)</strong> via the <code class="docutils literal notranslate"><span class="pre">pywwt</span></code> package, clearly distinguishes gamma-ray sources detected by EGRET and BATSE, classified by their origin relative to our Galaxy:</p>
+<ul class="simple">
+<li><p><strong>🔴 BATSE Galactic Sources</strong>: These gamma-ray bursts are predominantly aligned along the Galactic plane (|b| &lt; 10°), indicating their origin within the Milky Way or closely related Galactic objects.</p></li>
+<li><p><strong>🔵 BATSE Extragalactic Sources</strong>: Distributed more uniformly across the sky, these gamma-ray bursts originate from extragalactic phenomena, consistent with their uniform spatial distribution, as expected for cosmological sources.</p></li>
+<li><p><strong>🟡 EGRET Sources</strong>: EGRET sources, covering higher gamma-ray energies (30 MeV–30 GeV), show a mixture of Galactic and Extragalactic origins. They exhibit a concentration around the Galactic plane but also populate high galactic latitude regions.</p></li>
+</ul>
+<p>This visualization allows us to easily observe and interpret the differences in spatial distributions and origins of gamma-ray sources detected by two different instruments operating at distinct energy ranges:</p>
+<ul class="simple">
+<li><p><strong>EGRET</strong> (Energetic Gamma-Ray Experiment Telescope): ~30 MeV to 30 GeV</p></li>
+<li><p><strong>BATSE</strong> (Burst and Transient Source Experiment): 20 keV to 1 MeV</p></li>
+</ul>
+<p>The distinct spatial patterns reinforce our understanding of these sources:</p>
+<ul class="simple">
+<li><p><strong>Galactic sources</strong> tend to cluster along the Milky Way’s disk, influenced by the Galaxy’s structural components.</p></li>
+<li><p><strong>Extragalactic sources</strong> appear isotropic, as expected for distant gamma-ray bursts occurring throughout the observable universe.</p></li>
+</ul>
+<p>This comprehensive, interactive approach significantly enhances the analysis and interpretation of gamma-ray astrophysical phenomena, providing valuable insights into the spatial distribution, origin, and energy characteristics of these intriguing cosmic sources.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Third Part Observational Techniques documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Segunda_practica.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AngelEncinasMoreno.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
